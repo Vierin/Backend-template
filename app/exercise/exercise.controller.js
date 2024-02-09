@@ -1,81 +1,75 @@
-import asyncHandler from "express-async-handler";
-import { prisma } from "../prisma.js";
+import asyncHandler from 'express-async-handler'
 
-// @desc: Create new exercise
-// @access: Private
-// @route POST /api/exercises
+import { prisma } from '../prisma.js'
 
+// @desc    Create new exercise
+// @route 	POST /api/exercises
+// @access  Private
 export const createNewExercise = asyncHandler(async (req, res) => {
-    const {name, times, iconPath} = req.body;
+	const { name, times, iconPath } = req.body
 
-    const exercise = await prisma.exercise.create({
-        data: {
-            name,
-            times,
-            iconPath
-        },
-    });
+	const exercise = await prisma.exercise.create({
+		data: {
+			name,
+			times,
+			iconPath
+		}
+	})
 
-    res.json(exercise)
-});
+	res.json(exercise)
+})
 
-
-// @desc: Update exercise
-// @access: Private
-// @route PUT /api/exercises/:id
-
+// @desc    Update exercise
+// @route 	PUT /api/exercises/:id
+// @access  Private
 export const updateExercise = asyncHandler(async (req, res) => {
-    const {name, times, iconPath} = req.body;
+	const { name, times, iconPath } = req.body
 
-    try {
-        const exercise = await prisma.exercise.update({
-            where: {
-                id: +req.params.id
-            },
-            data: {
-                name,
-                times,
-                iconPath
-            },
-        });
+	try {
+		const exercise = await prisma.exercise.update({
+			where: {
+				id: +req.params.id
+			},
+			data: {
+				name,
+				times,
+				iconPath
+			}
+		})
 
-        res.json(exercise)
-    } catch (error) {
-        res.status(404);
-        throw new Error("Exercise not found");
-    }
-});
+		res.json(exercise)
+	} catch (error) {
+		res.status(404)
+		throw new Error('Exercise not found!')
+	}
+})
 
-// @desc: Delete exercise
-// @access: Private
-// @route DELETE /api/exercises/:id
-
+// @desc    Delete exercise
+// @route 	DELETE /api/exercises/:id
+// @access  Private
 export const deleteExercise = asyncHandler(async (req, res) => {
-    try {
-        const exercise = await prisma.exercise.delete({
-            where: {
-                id: +req.params.id
-            }
-        });
+	try {
+		const exercise = await prisma.exercise.delete({
+			where: {
+				id: +req.params.id
+			}
+		})
 
-        res.json({message: "Exercise removed"})
-    } catch (error) {
-        res.status(404);
-        throw new Error("Exercise not found");
-    }
-});
+		res.json({ message: 'Exercise deleted!' })
+	} catch (error) {
+		res.status(404)
+		throw new Error('Exercise not found!')
+	}
+})
 
-// @desc: Get exercises
-// @access: Private
-// @route GET /api/exercises
-
-export const getExercise = asyncHandler(async (req, res) => {
-    const exercises = await prisma.exercise.findMany({
-        orderBy: {
-            id: {
-                createdAt: "desc"
-            }
-        }
-    });
-    res.json(exercises)
-});
+// @desc    Get exercises
+// @route   GET /api/exercises
+// @access  Private
+export const getExercises = asyncHandler(async (req, res) => {
+	const exercises = await prisma.exercise.findMany({
+		orderBy: {
+			createdAt: 'desc'
+		}
+	})
+	res.json(exercises)
+})

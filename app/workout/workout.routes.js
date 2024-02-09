@@ -1,10 +1,23 @@
-import express from "express";
-import { protect } from "../middleware/auth.middleware.js";
-import { createNewWorkout, getWorkout, getWorkouts, updateWorkout, deleteWorkout } from "./workout.controller.js";
+import express from 'express'
 
-const router = express.Router();
+import { protect } from '../middleware/auth.middleware.js'
 
-router.route("/").post(protect, createNewWorkout).get(protect, getWorkouts);
-router.route("/:id").get(protect, getWorkout).put(protect, updateWorkout).delete(protect, deleteWorkout);
+import {
+	createNewWorkout,
+	deleteWorkout,
+	getWorkout,
+	getWorkouts,
+	updateWorkout
+} from './workout.controller.js'
 
-export default router;
+const router = express.Router()
+
+router.route('/').post(protect, createNewWorkout).get(protect, getWorkouts)
+
+router
+	.route('/:id')
+	.get(protect, getWorkout)
+	.put(protect, updateWorkout)
+	.delete(protect, deleteWorkout)
+
+export default router
